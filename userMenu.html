@@ -1,0 +1,1823 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Store | Piece by PC</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:#080808;
+  --panel:#101010;
+  --card:#111111;
+  --input:#151515;
+  --text:#ffffff;
+  --muted:#858585;
+  --border:#303030;
+  --accent:#ffffff;
+  --accent-text:#080808;
+  --sidebar:#0b0b0b;
+}
+
+html[data-theme="light"] {
+  --bg:#f4f4f4;
+  --panel:#ffffff;
+  --card:#ffffff;
+  --input:#f2f2f2;
+  --text:#080808;
+  --muted:#777777;
+  --border:#dedede;
+  --accent:#080808;
+  --accent-text:#ffffff;
+  --sidebar:#ffffff;
+}
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body {
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  transition:background .3s ease,color .3s ease;
+}
+
+button,input {
+  font:inherit;
+}
+
+button {
+  cursor:pointer;
+}
+
+a {
+  color:inherit;
+  text-decoration:none;
+}
+
+.app {
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width:270px;
+  min-width:270px;
+  background:var(--sidebar);
+  border-right:1px solid var(--border);
+  padding:27px 17px 20px;
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  inset:0 auto 0 0;
+  z-index:10;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 10px;
+  margin-bottom:42px;
+}
+
+.brand-icon {
+  width:43px;
+  height:43px;
+  border:1px solid var(--text);
+  display:grid;
+  place-items:center;
+  font:900 26px 'League Spartan',sans-serif;
+}
+
+.brand-name {
+  font:900 24px 'League Spartan',sans-serif;
+  letter-spacing:-.7px;
+}
+
+.brand-sub {
+  font-size:8px;
+  color:var(--muted);
+  letter-spacing:1.3px;
+  font-weight:700;
+  margin-top:3px;
+}
+
+.panel-tag {
+  display:inline-block;
+  align-self:flex-start;
+  margin:0 9px 32px;
+  padding:10px 13px;
+  border:1px solid var(--border);
+  color:var(--text);
+  font:900 10px 'League Spartan',sans-serif;
+  letter-spacing:1.4px;
+}
+
+.nav-heading {
+  color:var(--muted);
+  font:900 10px 'League Spartan',sans-serif;
+  letter-spacing:2px;
+  margin:0 10px 12px;
+}
+
+.nav-menu {
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.nav-link {
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:16px 14px;
+  border:1px solid transparent;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+  transition:.2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background:var(--panel);
+  border-color:var(--border);
+  color:var(--text);
+}
+
+.nav-icon {
+  width:20px;
+  text-align:center;
+  font-size:17px;
+}
+
+.sidebar-bottom {
+  margin-top:auto;
+  border-top:1px solid var(--border);
+  padding:20px 9px 0;
+}
+
+.user-info {
+  display:flex;
+  align-items:center;
+  gap:11px;
+  margin-bottom:22px;
+}
+
+.avatar {
+  width:39px;
+  height:39px;
+  border:1px solid var(--border);
+  display:grid;
+  place-items:center;
+  font:900 17px 'League Spartan',sans-serif;
+  flex-shrink:0;
+}
+
+.user-name {
+  font-size:12px;
+  font-weight:700;
+}
+
+.user-email {
+  font-size:10px;
+  color:var(--muted);
+  margin-top:4px;
+  word-break:break-all;
+}
+
+.signout {
+  width:100%;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:10px 7px;
+  background:transparent;
+  border:0;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  text-align:left;
+}
+
+.signout:hover {
+  color:var(--text);
+}
+
+/* MAIN */
+
+.main {
+  margin-left:270px;
+  width:calc(100% - 270px);
+  min-width:0;
+}
+
+.topbar {
+  height:88px;
+  border-bottom:1px solid var(--border);
+  padding:0 4%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.topbar-brand {
+  font:900 11px 'League Spartan',sans-serif;
+  letter-spacing:2px;
+  color:var(--muted);
+}
+
+.topbar-right {
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.theme-btn {
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--border);
+  padding:11px 15px;
+  font:900 10px 'League Spartan',sans-serif;
+  letter-spacing:1px;
+}
+
+.account-status {
+  border:1px solid var(--border);
+  padding:10px 14px;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.status-dot {
+  display:inline-block;
+  width:7px;
+  height:7px;
+  background:var(--text);
+  border-radius:50%;
+  margin-right:7px;
+}
+
+.content {
+  max-width:1500px;
+  margin:auto;
+  padding:40px 4% 65px;
+}
+
+.page-heading {
+  margin-bottom:42px;
+}
+
+.eyebrow {
+  color:var(--muted);
+  font:900 10px 'League Spartan',sans-serif;
+  letter-spacing:2px;
+  margin-bottom:12px;
+}
+
+h1 {
+  font:900 clamp(38px,4vw,55px)/.95 'League Spartan',sans-serif;
+  letter-spacing:-1.5px;
+}
+
+.section-top {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:23px;
+}
+
+.section-title {
+  font:900 25px 'League Spartan',sans-serif;
+  margin-bottom:7px;
+}
+
+.section-description {
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* CART */
+
+.cart-summary {
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:9px;
+  border:1px solid var(--border);
+  white-space:nowrap;
+}
+
+.cart-count {
+  font-size:11px;
+  color:var(--muted);
+  padding-left:5px;
+}
+
+.cart-count strong {
+  color:var(--text);
+  margin-left:8px;
+}
+
+.checkout-btn {
+  background:var(--accent);
+  color:var(--accent-text);
+  border:0;
+  padding:13px 17px;
+  font:900 11px 'League Spartan',sans-serif;
+  letter-spacing:.5px;
+}
+
+.checkout-btn:hover {
+  opacity:.8;
+}
+
+/* SEARCH */
+
+.search-row {
+  margin-bottom:24px;
+  display:flex;
+  gap:12px;
+}
+
+.search-wrap {
+  width:min(550px,100%);
+}
+
+.search-wrap input {
+  width:100%;
+  height:49px;
+  padding:0 16px;
+  background:var(--input);
+  color:var(--text);
+  border:1px solid var(--border);
+  outline:none;
+  font-size:12px;
+}
+
+.search-wrap input:focus {
+  border-color:var(--muted);
+}
+
+.search-wrap input::placeholder {
+  color:var(--muted);
+}
+
+/* PRODUCTS */
+
+.product-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+
+.product-card {
+  min-width:0;
+  border:1px solid var(--border);
+  background:var(--card);
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  transition:border-color .2s,transform .2s;
+}
+
+.product-card:hover {
+  border-color:var(--muted);
+  transform:translateY(-3px);
+}
+
+.product-image-wrap {
+  width:100%;
+  height:220px;
+  background:var(--panel);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+
+.product-card img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  padding:10px;
+}
+
+.product-placeholder {
+  color:var(--muted);
+  font-size:11px;
+  text-align:center;
+}
+
+.product-card h3 {
+  font:900 20px 'League Spartan',sans-serif;
+  line-height:1.15;
+}
+
+.product-description {
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+  min-height:38px;
+}
+
+.product-price {
+  font:900 19px 'League Spartan',sans-serif;
+  margin-top:auto;
+}
+
+.product-stock {
+  font-size:10px;
+  color:var(--muted);
+}
+
+.add-product-btn {
+  width:100%;
+  padding:14px;
+  border:0;
+  background:var(--accent);
+  color:var(--accent-text);
+  font:900 11px 'League Spartan',sans-serif;
+  letter-spacing:.8px;
+}
+
+.add-product-btn:hover {
+  opacity:.8;
+}
+
+.add-product-btn:disabled {
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.product-message {
+  grid-column:1/-1;
+  border:1px dashed var(--border);
+  padding:35px 20px;
+  color:var(--muted);
+  font-size:13px;
+  text-align:center;
+  line-height:1.7;
+}
+
+.retry-btn {
+  margin-top:15px;
+  padding:11px 17px;
+  background:var(--accent);
+  color:var(--accent-text);
+  border:0;
+  font:900 11px 'League Spartan',sans-serif;
+}
+
+/* ORDERS */
+
+#ordersPage {
+  display:none;
+}
+
+.orders-panel {
+  border:1px solid var(--border);
+  padding:35px;
+  background:var(--panel);
+}
+
+.orders-panel h2 {
+  font:900 25px 'League Spartan',sans-serif;
+  margin-bottom:10px;
+}
+
+.orders-panel p {
+  color:var(--muted);
+  font-size:13px;
+}
+
+.order-card {
+  border:1px solid var(--border);
+  padding:20px;
+  margin-top:15px;
+  background:var(--card);
+}
+
+.order-card-header,
+.order-total-row {
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.order-date,
+.order-status {
+  color:var(--muted);
+  font-size:11px;
+}
+
+.order-items {
+  margin-top:12px;
+}
+
+.order-item-row {
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  margin-top:10px;
+  font-size:12px;
+}
+
+.order-total-row {
+  margin-top:18px;
+  padding-top:15px;
+  border-top:1px solid var(--border);
+}
+
+/* CHECKOUT */
+
+.checkout-modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:rgba(0,0,0,.78);
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.checkout-modal.show {
+  display:flex;
+}
+
+.checkout-box {
+  width:min(700px,100%);
+  max-height:90vh;
+  overflow-y:auto;
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:28px;
+  color:var(--text);
+}
+
+.checkout-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding-bottom:20px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:20px;
+}
+
+.checkout-header h2 {
+  font:900 27px 'League Spartan',sans-serif;
+}
+
+.close-checkout {
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--border);
+  width:35px;
+  height:35px;
+  font-size:20px;
+}
+
+.checkout-subtitle {
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:18px;
+}
+
+.checkout-list {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.checkout-item {
+  display:grid;
+  grid-template-columns:25px 1fr auto;
+  align-items:center;
+  gap:13px;
+  padding:15px;
+  border:1px solid var(--border);
+  background:var(--card);
+}
+
+.checkout-item input {
+  width:17px;
+  height:17px;
+  accent-color:var(--text);
+  cursor:pointer;
+}
+
+.checkout-product-name {
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:5px;
+}
+
+.checkout-product-details {
+  color:var(--muted);
+  font-size:11px;
+}
+
+.checkout-item-total {
+  font-size:13px;
+  font-weight:700;
+  text-align:right;
+  white-space:nowrap;
+}
+
+.quantity-controls {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-top:9px;
+}
+
+.quantity-controls button {
+  width:25px;
+  height:25px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text);
+}
+
+.quantity-controls span {
+  font-size:12px;
+  min-width:12px;
+  text-align:center;
+}
+
+.checkout-actions {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:18px;
+  flex-wrap:wrap;
+}
+
+.remove-selected {
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--border);
+  padding:12px 15px;
+  font:900 10px 'League Spartan',sans-serif;
+  letter-spacing:.5px;
+}
+
+.remove-selected:hover {
+  background:var(--text);
+  color:var(--bg);
+}
+
+.checkout-total {
+  margin-top:22px;
+  padding-top:20px;
+  border-top:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.checkout-total span:first-child {
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+}
+
+.checkout-total strong {
+  font:900 25px 'League Spartan',sans-serif;
+}
+
+.place-order-btn {
+  width:100%;
+  margin-top:20px;
+  padding:16px;
+  border:0;
+  background:var(--accent);
+  color:var(--accent-text);
+  font:900 12px 'League Spartan',sans-serif;
+  letter-spacing:1px;
+}
+
+.place-order-btn:hover {
+  opacity:.8;
+}
+
+.place-order-btn:disabled {
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.empty-cart {
+  text-align:center;
+  padding:35px 15px;
+  border:1px dashed var(--border);
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* FOOTER */
+
+.page-footer {
+  border-top:1px solid var(--border);
+  padding:20px 4%;
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  color:var(--muted);
+  font:900 9px 'League Spartan',sans-serif;
+  letter-spacing:1.5px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1050px) {
+  .product-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:700px) {
+  .sidebar {
+    width:76px;
+    min-width:76px;
+    padding:20px 9px;
+  }
+
+  .brand {
+    justify-content:center;
+    padding:0;
+    margin-bottom:35px;
+  }
+
+  .brand-copy,
+  .panel-tag,
+  .nav-heading,
+  .nav-text,
+  .user-copy,
+  .signout-text {
+    display:none;
+  }
+
+  .nav-link {
+    justify-content:center;
+    padding:16px 5px;
+  }
+
+  .nav-icon {
+    font-size:19px;
+  }
+
+  .sidebar-bottom {
+    padding:18px 0 0;
+  }
+
+  .user-info {
+    justify-content:center;
+  }
+
+  .main {
+    margin-left:76px;
+    width:calc(100% - 76px);
+  }
+
+  .topbar {
+    height:72px;
+    padding:0 18px;
+  }
+
+  .topbar-brand {
+    font-size:9px;
+  }
+
+  .account-status {
+    display:none;
+  }
+
+  .content {
+    padding:30px 18px 45px;
+  }
+
+  .section-top {
+    flex-direction:column;
+  }
+
+  .cart-summary {
+    align-self:flex-start;
+  }
+
+  .product-grid {
+    grid-template-columns:1fr;
+  }
+
+  .page-footer {
+    flex-wrap:wrap;
+    font-size:8px;
+  }
+
+  .checkout-box {
+    padding:20px;
+  }
+
+  .checkout-item {
+    grid-template-columns:22px 1fr;
+  }
+
+  .checkout-item-total {
+    grid-column:2;
+    text-align:left;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,
+  *::before,
+  *::after {
+    transition:none !important;
+    animation:none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="#" class="brand">
+      <div class="brand-icon">P</div>
+      <div class="brand-copy">
+        <div class="brand-name">Piece by PC</div>
+        <div class="brand-sub">CUSTOMER WORKSPACE</div>
+      </div>
+    </a>
+
+    <div class="panel-tag">CUSTOMER PANEL</div>
+    <div class="nav-heading">SHOPPING</div>
+
+    <nav class="nav-menu">
+      <a href="#" class="nav-link active" id="browseNav">
+        <span class="nav-icon">⌕</span>
+        <span class="nav-text">Browse Products</span>
+      </a>
+
+      <a href="#" class="nav-link" id="ordersNav">
+        <span class="nav-icon">▤</span>
+        <span class="nav-text">My Orders</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="user-info">
+        <div class="avatar" id="userAvatar">U</div>
+        <div class="user-copy">
+          <div class="user-name" id="userName">Loading...</div>
+          <div class="user-email" id="userEmail"></div>
+        </div>
+      </div>
+
+      <button class="signout" id="signoutBtn">
+        <span>↪</span>
+        <span class="signout-text">Sign out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-brand">PIECE BY PC / CUSTOMER STORE</div>
+
+      <div class="topbar-right">
+        <div class="account-status">
+          <span class="status-dot"></span>
+          Customer account
+        </div>
+
+        <button class="theme-btn" id="themeToggle">
+          ☀ &nbsp; LIGHT MODE
+        </button>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- BROWSE PAGE -->
+      <section id="browsePage">
+        <div class="page-heading">
+          <div class="eyebrow">CUSTOMER STORE / 001</div>
+          <h1>Browse Products.</h1>
+        </div>
+
+        <div class="section-top">
+          <div>
+            <h2 class="section-title">Find what you need.</h2>
+            <p class="section-description">
+              Browse available products and add them to your cart.
+            </p>
+          </div>
+
+          <div class="cart-summary">
+            <div class="cart-count">
+              Cart <strong id="cartCount">0 items</strong>
+            </div>
+
+            <button class="checkout-btn" id="checkoutBtn">
+              Checkout · ₱<span id="cartTotal">0.00</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="search-row">
+          <div class="search-wrap">
+            <input
+              type="search"
+              id="searchInput"
+              placeholder="Search products by name or item number..."
+            >
+          </div>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+          <div class="product-message">Loading products...</div>
+        </div>
+      </section>
+
+      <!-- MY ORDERS PAGE -->
+      <section id="ordersPage">
+        <div class="page-heading">
+          <div class="eyebrow">CUSTOMER ACCOUNT / 002</div>
+          <h1>My Orders.</h1>
+        </div>
+
+        <div class="orders-panel">
+          <h2>Order History</h2>
+          <p>Your previous purchases and order status will appear here.</p>
+
+          <div id="orderHistoryList" style="margin-top:20px;">
+            <p>No orders available yet.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="page-footer">
+      <span>COMPUTER PERIPHERALS</span>
+      <span>HARD COMPONENTS</span>
+      <span>PIECE BY PC © 2026</span>
+    </footer>
+  </main>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="checkout-modal" id="checkoutModal">
+  <div class="checkout-box">
+    <div class="checkout-header">
+      <h2>Checkout.</h2>
+      <button class="close-checkout" id="closeCheckout">&times;</button>
+    </div>
+
+    <p class="checkout-subtitle">
+      Review your orders. Select products you want to remove from your cart.
+    </p>
+
+    <div class="checkout-list" id="checkoutList"></div>
+
+    <div class="checkout-actions">
+      <button class="remove-selected" id="removeSelected">
+        REMOVE SELECTED
+      </button>
+    </div>
+
+    <div class="checkout-total">
+      <span>TOTAL AMOUNT</span>
+      <strong>₱<span id="checkoutTotal">0.00</span></strong>
+    </div>
+
+    <button class="place-order-btn" id="placeOrder">
+      PLACE ORDER
+    </button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+/* =========================================
+   SUPABASE CONFIGURATION
+========================================= */
+
+const SUPABASE_URL = "https://keahdsumaiztwikoviuk.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_Lo1_wTNKOaaj_T5MAy8JFA_eLb6CIKt";
+
+const supabaseClient = window.pieceByPCSupabase ||
+  window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+window.pieceByPCSupabase = supabaseClient;
+
+
+/* =========================================
+   GLOBAL STATE
+========================================= */
+
+let cart = [];
+
+try {
+  const savedCart = JSON.parse(
+    localStorage.getItem("pieceByPCCart") || "[]"
+  );
+
+  cart = Array.isArray(savedCart) ? savedCart : [];
+} catch {
+  cart = [];
+}
+
+let allProducts = [];
+let currentUser = null;
+
+
+/* =========================================
+   HELPERS
+========================================= */
+
+function formatPrice(amount) {
+  return Number(amount || 0).toLocaleString("en-PH", {
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[character]);
+}
+
+function saveCart() {
+  localStorage.setItem("pieceByPCCart", JSON.stringify(cart));
+}
+
+function getCartCount() {
+  return cart.reduce(
+    (sum, item) => sum + Number(item.quantity || 1),
+    0
+  );
+}
+
+function getCartTotal() {
+  return cart.reduce(
+    (sum, item) =>
+      sum + Number(item.price || 0) * Number(item.quantity || 1),
+    0
+  );
+}
+
+
+/* =========================================
+   CART
+========================================= */
+
+function updateCart() {
+  const count = getCartCount();
+
+  document.getElementById("cartCount").textContent =
+    count + (count === 1 ? " item" : " items");
+
+  document.getElementById("cartTotal").textContent =
+    formatPrice(getCartTotal());
+
+  saveCart();
+}
+
+function addToCart(product) {
+  if (
+    !product ||
+    !product.name ||
+    !Number.isFinite(Number(product.price)) ||
+    Number(product.price) < 0
+  ) {
+    alert("Invalid product.");
+    return;
+  }
+
+  const productId = String(product.id ?? product.name);
+
+  const existingProduct = cart.find(
+    item => String(item.id) === productId
+  );
+
+  if (existingProduct) {
+    existingProduct.quantity =
+      Number(existingProduct.quantity || 1) + 1;
+  } else {
+    cart.push({
+      id:productId,
+      name:product.name,
+      price:Number(product.price),
+      quantity:1
+    });
+  }
+
+  updateCart();
+}
+
+
+/* =========================================
+   LOAD PRODUCTS FROM SUPABASE
+========================================= */
+
+async function loadProducts() {
+  const productGrid = document.getElementById("productGrid");
+
+  productGrid.innerHTML =
+    '<div class="product-message">Loading products...</div>';
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("products")
+      .select("id, name, description, price, image_url, stock, is_available")
+      .eq("is_available", true)
+      .order("id", { ascending:true });
+
+    if (error) {
+      throw error;
+    }
+
+    allProducts = data || [];
+
+    if (allProducts.length === 0) {
+      productGrid.innerHTML = `
+        <div class="product-message">
+          No available products found.
+        </div>
+      `;
+      return;
+    }
+
+    renderProducts(allProducts);
+
+  } catch (error) {
+    console.error("Product loading error:", error);
+
+    productGrid.innerHTML = `
+      <div class="product-message">
+        Unable to load products from Supabase.<br>
+        Please check your products table, column names, and SELECT permissions.
+        <br>
+        <button class="retry-btn" id="retryProducts">
+          TRY AGAIN
+        </button>
+      </div>
+    `;
+
+    document.getElementById("retryProducts")
+      ?.addEventListener("click", loadProducts);
+  }
+}
+
+
+/* =========================================
+   DISPLAY PRODUCT CARDS
+========================================= */
+
+function renderProducts(products) {
+  const productGrid = document.getElementById("productGrid");
+
+  if (!products.length) {
+    productGrid.innerHTML = `
+      <div class="product-message">
+        No products matched your search.
+      </div>
+    `;
+    return;
+  }
+
+  productGrid.innerHTML = products.map(product => {
+    const stock = Number(product.stock ?? 0);
+    const hasStock = stock > 0;
+    const imageURL = product.image_url || "";
+
+    return `
+      <article class="product-card">
+
+        <div class="product-image-wrap">
+          ${
+            imageURL
+              ? `
+                <img
+                  src="${escapeHTML(imageURL)}"
+                  alt="${escapeHTML(product.name)}"
+                  loading="lazy"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
+                >
+                <div class="product-placeholder" style="display:none;">
+                  Image unavailable
+                </div>
+              `
+              : `
+                <div class="product-placeholder">
+                  No product image
+                </div>
+              `
+          }
+        </div>
+
+        <h3>${escapeHTML(product.name)}</h3>
+
+        <p class="product-description">
+          ${escapeHTML(product.description || "No description available.")}
+        </p>
+
+        <div class="product-price">
+          ₱${formatPrice(product.price)}
+        </div>
+
+        <div class="product-stock">
+          ${hasStock ? "In stock: " + stock : "Out of stock"}
+        </div>
+
+        <button
+          type="button"
+          class="add-product-btn"
+          data-product-id="${escapeHTML(product.id)}"
+          ${hasStock ? "" : "disabled"}
+        >
+          ${hasStock ? "ADD TO CART" : "OUT OF STOCK"}
+        </button>
+
+      </article>
+    `;
+  }).join("");
+
+  productGrid.querySelectorAll(".add-product-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const product = allProducts.find(
+        item => String(item.id) === button.dataset.productId
+      );
+
+      if (!product) {
+        alert("Product could not be found.");
+        return;
+      }
+
+      addToCart({
+        id:product.id,
+        name:product.name,
+        price:product.price
+      });
+    });
+  });
+}
+
+
+/* =========================================
+   PRODUCT SEARCH
+========================================= */
+
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("input", () => {
+  const searchTerm = searchInput.value.toLowerCase().trim();
+
+  const filteredProducts = allProducts.filter(product => {
+    const name = String(product.name || "").toLowerCase();
+    const id = String(product.id || "").toLowerCase();
+    const description = String(product.description || "").toLowerCase();
+
+    return (
+      name.includes(searchTerm) ||
+      id.includes(searchTerm) ||
+      description.includes(searchTerm)
+    );
+  });
+
+  renderProducts(filteredProducts);
+});
+
+
+/* =========================================
+   CHECKOUT DISPLAY
+========================================= */
+
+const checkoutModal = document.getElementById("checkoutModal");
+const checkoutList = document.getElementById("checkoutList");
+
+function renderCheckout() {
+  checkoutList.innerHTML = "";
+
+  const placeOrderButton = document.getElementById("placeOrder");
+
+  if (cart.length === 0) {
+    checkoutList.innerHTML = `
+      <div class="empty-cart">
+        Your cart is empty. Add products before checking out.
+      </div>
+    `;
+
+    document.getElementById("checkoutTotal").textContent = "0.00";
+    placeOrderButton.disabled = true;
+    return;
+  }
+
+  placeOrderButton.disabled = false;
+
+  cart.forEach((item, index) => {
+    const quantity = Number(item.quantity || 1);
+    const price = Number(item.price || 0);
+    const subtotal = price * quantity;
+
+    const row = document.createElement("div");
+    row.className = "checkout-item";
+
+    row.innerHTML = `
+      <input
+        type="checkbox"
+        class="remove-checkbox"
+        value="${index}"
+        aria-label="Select ${escapeHTML(item.name)} for removal"
+      >
+
+      <div>
+        <div class="checkout-product-name">
+          ${escapeHTML(item.name)}
+        </div>
+
+        <div class="checkout-product-details">
+          ₱${formatPrice(price)} each
+        </div>
+
+        <div class="quantity-controls">
+          <button type="button" class="quantity-minus" data-index="${index}">−</button>
+          <span>${quantity}</span>
+          <button type="button" class="quantity-plus" data-index="${index}">+</button>
+        </div>
+      </div>
+
+      <div class="checkout-item-total">
+        ₱${formatPrice(subtotal)}
+      </div>
+    `;
+
+    checkoutList.appendChild(row);
+  });
+
+  document.getElementById("checkoutTotal").textContent =
+    formatPrice(getCartTotal());
+}
+
+
+/* =========================================
+   OPEN AND CLOSE CHECKOUT
+========================================= */
+
+document.getElementById("checkoutBtn").addEventListener("click", () => {
+  renderCheckout();
+  checkoutModal.classList.add("show");
+});
+
+document.getElementById("closeCheckout").addEventListener("click", () => {
+  checkoutModal.classList.remove("show");
+});
+
+checkoutModal.addEventListener("click", event => {
+  if (event.target === checkoutModal) {
+    checkoutModal.classList.remove("show");
+  }
+});
+
+
+/* =========================================
+   REMOVE SELECTED CART ITEMS
+========================================= */
+
+document.getElementById("removeSelected").addEventListener("click", () => {
+  const selected = Array.from(
+    document.querySelectorAll(".remove-checkbox:checked")
+  ).map(input => Number(input.value));
+
+  if (selected.length === 0) {
+    alert("Please select the products you want to remove.");
+    return;
+  }
+
+  if (!confirm("Are you sure you want to remove the selected products?")) {
+    return;
+  }
+
+  cart = cart.filter((item, index) => !selected.includes(index));
+
+  updateCart();
+  renderCheckout();
+});
+
+
+/* =========================================
+   CHANGE PRODUCT QUANTITY
+========================================= */
+
+checkoutList.addEventListener("click", event => {
+  const minusButton = event.target.closest(".quantity-minus");
+  const plusButton = event.target.closest(".quantity-plus");
+
+  if (!minusButton && !plusButton) return;
+
+  const index = Number(
+    (minusButton || plusButton).dataset.index
+  );
+
+  if (!cart[index]) return;
+
+  if (minusButton) {
+    cart[index].quantity =
+      Number(cart[index].quantity || 1) - 1;
+
+    if (cart[index].quantity <= 0) {
+      cart.splice(index, 1);
+    }
+  } else {
+    cart[index].quantity =
+      Number(cart[index].quantity || 1) + 1;
+  }
+
+  updateCart();
+  renderCheckout();
+});
+
+
+/* =========================================
+   PLACE ORDER
+========================================= */
+
+
+document.getElementById("placeOrder").addEventListener("click", async () => {
+  if (cart.length === 0) {
+    alert("Your cart is empty.");
+    return;
+  }
+
+  if (!confirm("Are you sure you want to place this order?")) {
+    return;
+  }
+
+  const button = document.getElementById("placeOrder");
+  button.disabled = true;
+
+  try {
+    // Get logged-in customer
+    const {
+      data: { user },
+      error: authError
+    } = await window.pieceByPCSupabase.auth.getUser();
+
+    if (authError || !user) {
+      throw new Error("Please log in first.");
+    }
+
+    // Save main order to Supabase
+    const { data: newOrder, error: orderError } =
+      await window.pieceByPCSupabase
+        .from("orders")
+        .insert({
+          user_id: user.id,
+          total_amount: getCartTotal(),
+          status: "Pending"
+        })
+        .select()
+        .single();
+
+    if (orderError) throw orderError;
+
+    // Save purchased products
+    const orderItems = cart.map(item => ({
+      order_id: newOrder.id,
+      product_id: item.id,
+      product_name: item.name,
+      unit_price: Number(item.price),
+      quantity: Number(item.quantity || 1),
+      subtotal: Number(item.price) * Number(item.quantity || 1)
+    }));
+
+    const { error: itemsError } =
+      await window.pieceByPCSupabase
+        .from("order_items")
+        .insert(orderItems);
+
+    if (itemsError) {
+      console.error(itemsError);
+      alert("Order was created " )
+      return;
+    }
+
+    // Clear cart after successful saving
+    cart = [];
+
+    updateCart();
+    checkoutModal.classList.remove("show");
+
+    await renderOrderHistory();
+
+    alert("Your order has been placed successfully!");
+
+  } catch (error) {
+    console.error("Order saving error:", error);
+    alert("Unable to save your order: " + error.message);
+
+  } finally {
+    button.disabled = false;
+  }
+});
+
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+const browsePage = document.getElementById("browsePage");
+const ordersPage = document.getElementById("ordersPage");
+const browseNav = document.getElementById("browseNav");
+const ordersNav = document.getElementById("ordersNav");
+
+browseNav.addEventListener("click", event => {
+  event.preventDefault();
+
+  browsePage.style.display = "block";
+  ordersPage.style.display = "none";
+
+  browseNav.classList.add("active");
+  ordersNav.classList.remove("active");
+});
+
+ordersNav.addEventListener("click", event => {
+  event.preventDefault();
+
+  browsePage.style.display = "none";
+  ordersPage.style.display = "block";
+
+  ordersNav.classList.add("active");
+  browseNav.classList.remove("active");
+
+  renderOrderHistory();
+});
+
+
+/* =========================================
+   ORDER HISTORY
+========================================= */
+
+async function renderOrderHistory() {
+  const orderHistoryList = document.getElementById("orderHistoryList");
+
+  orderHistoryList.innerHTML = "<p>Loading your orders...</p>";
+
+  try {
+    // Get logged-in customer
+    const {
+      data: { user },
+      error: authError
+    } = await window.pieceByPCSupabase.auth.getUser();
+
+    if (authError) throw authError;
+
+    if (!user) {
+      orderHistoryList.innerHTML = "<p>Please log in to view your orders.</p>";
+      return;
+    }
+
+    // Fetch customer's orders from Supabase
+    const { data: orders, error: ordersError } =
+      await window.pieceByPCSupabase
+        .from("orders")
+        .select("id, total_amount, status, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+    if (ordersError) throw ordersError;
+
+    if (!orders || orders.length === 0) {
+      orderHistoryList.innerHTML = "<p>No orders available yet.</p>";
+      return;
+    }
+
+    // Fetch all items belonging to these orders
+    const orderIds = orders.map(order => order.id);
+
+    const { data: orderItems, error: itemsError } =
+      await window.pieceByPCSupabase
+        .from("order_items")
+        .select("order_id, product_name, unit_price, quantity, subtotal")
+        .in("order_id", orderIds);
+
+    if (itemsError) throw itemsError;
+
+    orderHistoryList.innerHTML = "";
+
+    orders.forEach(order => {
+      const orderCard = document.createElement("div");
+      orderCard.className = "order-card";
+
+      const items = (orderItems || []).filter(
+        item => String(item.order_id) === String(order.id)
+      );
+
+      const itemsHTML = items.map(item => `
+        <div class="order-item-row">
+          <span>
+            ${escapeHTML(item.product_name)} × ${Number(item.quantity || 1)}
+          </span>
+
+          <strong>
+            ₱${formatPrice(Number(item.subtotal || 0))}
+          </strong>
+        </div>
+      `).join("");
+
+      const orderDate = new Date(order.created_at).toLocaleString("en-PH");
+
+      orderCard.innerHTML = `
+        <div class="order-card-header">
+          <strong>${escapeHTML("PPC-" + order.id)}</strong>
+          <span class="order-date">${escapeHTML(orderDate)}</span>
+        </div>
+
+        <div class="order-status" style="margin-top:12px;">
+          Status: ${escapeHTML(order.status || "Pending")}
+        </div>
+
+        <div class="order-items">
+          ${itemsHTML || "<p>No product details available.</p>"}
+        </div>
+
+        <div class="order-total-row">
+          <strong>Order Total</strong>
+          <strong>₱${formatPrice(Number(order.total_amount || 0))}</strong>
+        </div>
+      `;
+
+      orderHistoryList.appendChild(orderCard);
+    });
+
+  } catch (error) {
+    console.error("Order history loading error:", error);
+    orderHistoryList.innerHTML =
+      "<p>Unable to load your orders. Please refresh the page.</p>";
+  }
+}
+
+
+/* =========================================
+   THEME TOGGLE
+========================================= */
+
+const root = document.documentElement;
+const themeToggle = document.getElementById("themeToggle");
+
+function applyTheme(theme) {
+  root.setAttribute("data-theme", theme);
+
+  themeToggle.innerHTML =
+    theme === "dark"
+      ? "☀ &nbsp; LIGHT MODE"
+      : "☾ &nbsp; NIGHT MODE";
+
+  localStorage.setItem("pieceByPCTheme", theme);
+}
+
+applyTheme(localStorage.getItem("pieceByPCTheme") || "dark");
+
+themeToggle.addEventListener("click", () => {
+  const nextTheme =
+    root.getAttribute("data-theme") === "dark"
+      ? "light"
+      : "dark";
+
+  applyTheme(nextTheme);
+});
+
+
+/* =========================================
+   AUTHENTICATED USER
+========================================= */
+
+async function loadAuthenticatedUser() {
+  const nameElement = document.getElementById("userName");
+  const emailElement = document.getElementById("userEmail");
+  const avatarElement = document.getElementById("userAvatar");
+
+  nameElement.textContent = "Loading...";
+  emailElement.textContent = "";
+  avatarElement.textContent = "…";
+
+  try {
+    const {
+      data: { user },
+      error
+    } = await supabaseClient.auth.getUser();
+
+    if (error || !user) {
+      console.error("Authentication error:", error);
+      window.location.replace("login.html");
+      return null;
+    }
+
+    currentUser = user;
+
+    const { data: profile, error: profileError } =
+      await supabaseClient
+        .from("profiles")
+        .select("full_name, email")
+        .eq("id", user.id)
+        .maybeSingle();
+
+    if (profileError) {
+      console.error("Profile loading error:", profileError);
+    }
+
+    const name =
+      profile?.full_name?.trim() ||
+      user.user_metadata?.full_name ||
+      user.user_metadata?.name ||
+      user.email?.split("@")[0] ||
+      "Customer";
+
+    const email =
+      profile?.email ||
+      user.email ||
+      "";
+
+    nameElement.textContent = name;
+    emailElement.textContent = email;
+    avatarElement.textContent = name.charAt(0).toUpperCase();
+
+    return user;
+
+  } catch (error) {
+    console.error("User loading error:", error);
+    window.location.replace("login.html");
+    return null;
+  }
+}
+
+
+/* =========================================
+   SIGN OUT
+========================================= */
+
+document.getElementById("signoutBtn").addEventListener("click", async () => {
+  if (!confirm("Are you sure you want to sign out?")) {
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    console.error("Sign out error:", error);
+    alert("Unable to sign out. Please try again.");
+    return;
+  }
+
+  window.location.replace("login.html");
+});
+
+
+/* =========================================
+   INITIALIZE CUSTOMER STORE
+========================================= */
+
+async function initializeStore() {
+  updateCart();
+
+  const user = await loadAuthenticatedUser();
+
+  if (!user) return;
+
+  await loadProducts();
+}
+
+initializeStore();
+
+</script>
+</body>
+</html>
